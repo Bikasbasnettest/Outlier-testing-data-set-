@@ -1,0 +1,25 @@
+require(gvlma)
+fit=lm(N0H.S~REP+VAR) 
+gvmodelfit=gvlma(fit) 
+gvmodelfit( #if the data isnot normal distributed 
+                    Value   p-value                   Decision
+Global Stat        66.271 1.389e-13 Assumptions NOT satisfied!
+Skewness           24.888 6.077e-07 Assumptions NOT satisfied!
+Kurtosis           15.789 7.080e-05 Assumptions NOT satisfied!
+Link Function      17.207 3.351e-05 Assumptions NOT satisfied!
+Heteroscedasticity  8.386 3.781e-03 Assumptions NOT satisfied!)
+outliers<-boxplot.stats(Bikas$N0H.S)$out
+outliers
+boxplot(Bikas$N0H.S, main = "Boxplot of Variable1", col = c("orange", "green"), border = "brown", horizontal = TRUE, notch = TRUE, varwidth = TRUE, outline = TRUE, whisklty = 1, staplelty = 1)
+
+points(Bikas$N0H.S[which(Bikas$N0H.S %in% outliers)], pch = 19, col = "red")
+
+threshold <- 15
+Q1 <- quantile(Bikas$N0H.S, 0.25, na.rm = TRUE)
+Q3 <- quantile(Bikas$N0H.S, 0.75, na.rm = TRUE)
+IQR <- Q3 - Q1
+
+outliers_data_points<-Bikas$N0H.S[which(Bikas$N0H.S > (Q3 + threshold * IQR)) | 
+                                       which(Bikas$N0H.S<(Q1 - threshold * IQR))]
+
+print(outliers_data_points)
